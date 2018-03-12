@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        app:cardUseCompatPadding="true"
+        app:cardElevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/select"
+                android:layout_marginLeft="16dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_un_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:layout_toRightOf="@+id/select"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="6dp"
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Notification.Title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="12345678900" />
+
+            <TextView
+                android:layout_marginRight="16dp"
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@+id/context"
+                android:text="2017/10/21 10:11" />
+
+            <TextView
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginBottom="6dp"
+                android:layout_toStartOf="@+id/date"
+                android:layout_alignStart="@+id/title"
+                android:id="@+id/context"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginTop="8dp"
+                android:text="这是信息内容这是信息内这是信息内容这是信息内容这是信息内容这是信息内容这是信息内容这是信息内容这是信息内容" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

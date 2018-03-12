@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">新同步</string>
+    <string name="authority">com.newsync.provider</string>
+    <string name="account_type">com.newsync.type</string>
+    <string name="error_title">出错了</string>
+    <string name="close">知道了</string>
+    <string name="wifi_unavailable_error_message">wifi已关闭</string>
+    <string name="hint_information">{同步对象}\n\n上次同步时间：{时间}</string>
+    <string name="sync_obj">{同步对象}</string>
+    <string name="sync_time">{时间}</string>
+    <string name="smsSyncTime">SmsSyncTime</string>
+    <string name="contactsSyncTime">ContactsSyncTime</string>
+    <string name="callLogSyncTime">CallLogSyncTime</string>
+    <string name="sync">Sync</string>
+    <string name= "client_idl">12c1175a007c</string>
+    <string name="noSyncTime">没有同步记录</string>
+    <string name="syncMethod">SyncMethod</string>
+    <string name="encryptionPassword">EncryptionPassword</string>
+    <string name="syncByOnlyWifi">SyncByOnlyWifi</string>
+    <string name="node">此密码并非登录密码，仅作为加密数据的独立密码。密码请妥善保管，一经丢失无法找回。</string>
+    <string name= "CLIENT_ID1">a88aba5d</string>
+    <string name="about">about</string>
+    <string name="checkUpload">checkUpload</string>
+
+</resources>

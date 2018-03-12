@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/select_all"
+        android:title="全选"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/select_invert"
+        android:title="反选"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/delete"
+        android:title="删除"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/download"
+        android:icon="@drawable/ic_download"
+        android:title="下载"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/sync"
+        android:icon="@drawable/ic_sync"
+        android:title="上传"
+        app:showAsAction="always" />
+
+</menu>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="同步">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:icon="@drawable/ic_wifi"
+            android:key="@string/syncByOnlyWifi"
+            android:title="仅在WIFI下进行同步" />
+        <PreferenceScreen
+            android:icon="@drawable/ic_encryption"
+            android:key="@string/encryptionPassword"
+            android:summary="用于加密数据的密码"
+            android:title="加密密码" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="其他">
+        <PreferenceScreen
+            android:icon="@drawable/ic_about"
+            android:key="@string/about"
+            android:summary="最终解释权归软件开发者 源. 所有
+qgswsg@msn.cn"
+            android:title="关于" />
+    </PreferenceCategory>
+</PreferenceScreen>

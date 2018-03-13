@@ -169,7 +169,7 @@ public class Sms extends DataModelBase {
                 date + date_sent + protocol +
                 status + type + reply_path_present + subject +
                 body + service_center + locked +
-                error_code + creator + seen).hashCode();
+                error_code + creator).hashCode();
     }
 
     public int getSms_id() {

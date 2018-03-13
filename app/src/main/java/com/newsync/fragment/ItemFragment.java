@@ -333,13 +333,11 @@ public class ItemFragment extends Fragment implements ItemFragmentView {
                                         public void handleMessage(Message msg) {
                                             super.handleMessage(msg);
                                             app.syncSemaphore.release();
+                                            progressDialogDelete.cancel();
                                             switch (msg.what){
                                                 case 0:
                                                     reload();
                                                     ((MainActivity) getParentFragment().getActivity()).backPressdRun.run();
-                                                    break;
-                                                case 1:
-                                                    progressDialogDelete.cancel();
                                                     break;
                                             }
                                         }

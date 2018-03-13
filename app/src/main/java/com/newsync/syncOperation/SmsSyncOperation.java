@@ -129,7 +129,7 @@ public class SmsSyncOperation implements SyncOperation {
                     });
                 })
                 .setPositiveButton("取消", (dialogInterface, i) -> {
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(1);
                 }).show();
     }
 

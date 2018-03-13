@@ -1,6 +1,6 @@
 {
-  "versionCode":1,
-  "versionName":"1.0",
-  "updateContent":"",
-  "updateURL":""
+  "versionCode":2,
+  "versionName":"2.0",
+  "updateContent":"本次更新一共修复了5000个bug,新增了200000个bug\n具体修改了会重启的bug\n性能比原来慢了50倍",
+  "updateURL":"http://sqdd.myapp.com/myapp/qqteam/tim/down/tim.apk"
 }

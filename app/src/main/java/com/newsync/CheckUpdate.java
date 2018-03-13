@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 
@@ -84,7 +85,11 @@ public class CheckUpdate {
         Uri uri = Uri.parse(updateURL);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-        request.setDestinationInExternalPublicDir("Download/" + context.getPackageName(), "install.apk");
+        request.setTitle("开始下载新版本");
+        //设置下载文件的类型
+        request.setMimeType("application/vnd.android.package-archive");
+        //设置下载存放的文件夹和文件名字
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "com.newsync/install.apk");
         BaseApplication app = (BaseApplication) context.getApplicationContext();
         app.downloadId = downloadManager.enqueue(request);
     }

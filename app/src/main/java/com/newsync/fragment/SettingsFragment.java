@@ -5,25 +5,19 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
-import android.preference.RingtonePreference;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.newsync.BaseApplication;
+import com.newsync.CheckUpdate;
 import com.newsync.R;
 
 
@@ -60,9 +54,10 @@ public class SettingsFragment extends PreferenceFragment {
                 case "EncryptionPassword":
                     navigateTo(PasswordFragment.newInstance("change"));
                     break;
-//                case "checkUpload":
-//
-//                    break;
+                case "checkUpdate":
+                    CheckUpdate checkUpdate = new CheckUpdate();
+                    checkUpdate.check();
+                    break;
                 case "about":
                     new AlertDialog.Builder(getActivity())
                             .setTitle("关于新同步")
@@ -77,7 +72,7 @@ public class SettingsFragment extends PreferenceFragment {
             }
             return false;
         };
-//        findPreference(getString(R.string.checkUpload)).setOnPreferenceClickListener(onPreferenceClickListener);
+        findPreference(getString(R.string.checkUpload)).setOnPreferenceClickListener(onPreferenceClickListener);
         findPreference(getString(R.string.about)).setOnPreferenceClickListener(onPreferenceClickListener);
         findPreference(getString(R.string.encryptionPassword)).setOnPreferenceClickListener(onPreferenceClickListener);
     }

@@ -20,6 +20,6 @@
     <string name="node">此密码并非登录密码，仅作为加密数据的独立密码。密码请妥善保管，一经丢失无法找回。</string>
     <string name= "CLIENT_ID1">a88aba5d</string>
     <string name="about">about</string>
-    <string name="checkUpload">checkUpload</string>
+    <string name="checkUpload">checkUpdate</string>
 
 </resources>

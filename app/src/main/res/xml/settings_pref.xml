@@ -18,6 +18,12 @@
 
     <PreferenceCategory android:title="其他">
         <PreferenceScreen
+            android:title="检查更新"
+            android:icon="@drawable/ic_check_upload"
+            android:key="@string/checkUpload"
+            />
+
+        <PreferenceScreen
             android:icon="@drawable/ic_about"
             android:key="@string/about"
             android:summary="最终解释权归软件开发者 源. 所有

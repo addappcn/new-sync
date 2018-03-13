@@ -1,5 +1,6 @@
 # new-sync
 [新同步APP下载地址](https://raw.githubusercontent.com/qgswsg/new-sync/master/new-sync.apk)
+
 手机数据(短信、通讯录、通话记录)同步APP
 
 本着尊重用户隐私的出发点，新同步软件在实现数据同步的基础上，对用户数据进行了严格加密。

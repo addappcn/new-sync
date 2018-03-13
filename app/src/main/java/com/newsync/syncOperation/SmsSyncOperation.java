@@ -3,6 +3,7 @@ package com.newsync.syncOperation;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Handler;
@@ -43,7 +44,7 @@ public class SmsSyncOperation implements SyncOperation {
                     Sms sms = new Sms();
                     sms.initialize(query);
                     if (cloudHashcodeList.isEmpty()) {
-                         List<Sms> all = DataSupport.findAll(Sms.class);
+                        List<Sms> all = DataSupport.findAll(Sms.class);
                         for (Sms s : all) {
                             cloudHashcodeList.add(s.getHashCode());
                         }
@@ -84,7 +85,7 @@ public class SmsSyncOperation implements SyncOperation {
                     }
                 } while (bySQL.moveToNext());
             }
-        }catch (NullPointerException ex){
+        } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
         bySQL.close();
@@ -127,8 +128,9 @@ public class SmsSyncOperation implements SyncOperation {
                         handler.sendEmptyMessage(0);
                     });
                 })
-                .setPositiveButton("取消", null)
-                .show();
+                .setPositiveButton("取消", (dialogInterface, i) -> {
+                    handler.sendEmptyMessage(0);
+                }).show();
     }
 
 //    @Override

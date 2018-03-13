@@ -126,7 +126,9 @@ public class CallLogSyncOperation implements SyncOperation {
                         handler.sendEmptyMessage(0);
                     });
                 })
-                .setPositiveButton("取消", null)
+                .setPositiveButton("取消", (dialogInterface, i) -> {
+                    handler.sendEmptyMessage(0);
+                })
                 .show();
     }
 

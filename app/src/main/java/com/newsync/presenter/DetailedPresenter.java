@@ -31,24 +31,17 @@ import org.litepal.crud.DataSupport;
 
 public class DetailedPresenter implements BasePresenter {
 
-    //    private Sync sync;
-    private ItemFragmentView itemFragmentView;
     private int position;
     private Context context;
     public int[] drawableIds;
     private String type;
     private SyncOperation syncOperation;
-    private String buttonText;
     private String[] titles = new String[]{"短信", "联系人", "通话记录"};
 
     public SyncOperation getSyncOperation() {
         return syncOperation;
     }
 
-
-    //    public Sync getSync() {
-//        return sync;
-//    }
 
     public DetailedPresenter(Context context, int position) {
         this.context = context;
@@ -104,17 +97,15 @@ public class DetailedPresenter implements BasePresenter {
 
     @Override
     public void setView(BaseView baseView) {
-        this.itemFragmentView = (ItemFragmentView) baseView;
+
     }
 
     public void initSync() {
         SyncOperation syncOperation = null;
-//        Sync sync = null;
         switch (position) {
             case 0:
                 if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
                     syncOperation = new SmsSyncOperation(context);
-//                    sync = new Sync<Sms>(context, Telephony.Sms.CONTENT_URI, Sms.class);
                 }
                 break;
             case 1:
@@ -134,30 +125,6 @@ public class DetailedPresenter implements BasePresenter {
     public String getTitle() {
         return titles[position];
     }
-
-//    public void loadCloud() {
-//        if (sync != null) {
-//            Executors.newCachedThreadPool().execute(() ->
-//                    sync.loadCloud(dataModelBase -> itemFragmentView.refreshList(((DataModelBase) dataModelBase).getCloudListItem()))
-//            );
-//        }
-//    }
-
-//    public void loadPhoneMore(Context context) {
-//        if (sync != null) {
-//            Executors.newCachedThreadPool().execute(() ->
-//                    sync.loadLocalMore(dataModelBase -> itemFragmentView.refreshList(((DataModelBase) dataModelBase).getLocalListItem(context)))
-//            );
-//        }
-//    }
-//
-//    public void loadCloudMore() {
-//        if (sync != null) {
-//            Executors.newCachedThreadPool().execute(() ->
-//                    sync.loadCloudMore(dataModelBase -> itemFragmentView.refreshList(((DataModelBase) dataModelBase).getCloudListItem()))
-//            );
-//        }
-//    }
 
     public void initIcon() {
         switch (position) {
@@ -219,18 +186,5 @@ public class DetailedPresenter implements BasePresenter {
         throw new RuntimeException();
     }
 
-//    public CallBack<Integer> getOperation(int tag) {
-//        switch (tag) {
-//            case 0:
-//                return pos -> {
-//
-//                };
-//            case 1:
-//                return pos -> {
-//
-//                };
-//        }
-//        throw new RuntimeException();
-//    }
 
 }

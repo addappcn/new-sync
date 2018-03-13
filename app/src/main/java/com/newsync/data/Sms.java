@@ -166,7 +166,7 @@ public class Sms extends DataModelBase {
     @Override
     public int hashCode() {
         return (address + person +
-                date + date_sent + protocol + read +
+                date + date_sent + protocol +
                 status + type + reply_path_present + subject +
                 body + service_center + locked +
                 error_code + creator + seen).hashCode();

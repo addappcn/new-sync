@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.newsync.BaseApplication;
 import com.newsync.BuildConfig;
@@ -78,11 +79,13 @@ public class SettingsFragment extends PreferenceFragment {
                                             .show();
                                     break;
                                 case 1://当前版本不是最新版
+                                    CheckUpdate.Version version = (CheckUpdate.Version) msg.obj;
                                     new AlertDialog.Builder(getActivity())
                                             .setTitle("更新")
-                                            .setMessage("有新版本\n" + ((CheckUpdate.Version) msg.obj).getUpdateContent())
+                                            .setMessage("有新版本\n" + version.getUpdateContent())
                                             .setPositiveButton("更新", (dialogInterface, i) -> {
-                                                checkUpdate.startUpdate(getActivity(), ((CheckUpdate.Version) msg.obj).getUpdateURL());
+                                                Toast.makeText(getActivity(), "开始下载", Toast.LENGTH_SHORT).show();
+                                                checkUpdate.startUpdate(getActivity(), version.getUpdateURL());
                                             })
                                             .setNegativeButton("稍后更新", null)
                                             .show();

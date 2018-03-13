@@ -27,7 +27,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CheckUpdate {
 
-    public class Version{
+    public class Version {
         private int versionCode;
         private String versionName;
         private String updateContent;
@@ -66,44 +66,31 @@ public class CheckUpdate {
         }
     }
 
-    public void check(Handler handler){
+    public void check(Handler handler) {
         getLatestVersion(version -> {
-            if (BuildConfig.VERSION_CODE <= version.getVersionCode()){
+            if (BuildConfig.VERSION_CODE >= version.getVersionCode()) {
                 handler.sendEmptyMessage(0);
-            }else {
-                Message obtain = Message.obtain();
-                obtain.obj = version;
-                obtain.what = 1;
-                handler.sendMessage(obtain);
+            } else {
+                Message message = Message.obtain();
+                message.obj = version;
+                message.what = 1;
+                handler.sendMessage(message);
             }
         });
     }
 
-    public void startUpdate(Context context,String updateURL){
+    public void startUpdate(Context context, String updateURL) {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateURL));
+        Uri uri = Uri.parse(updateURL);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
-        long enqueue = downloadManager.enqueue(request);
-        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-                if (ID == enqueue) {
-                    try {
-                        downloadManager.openDownloadedFile(enqueue);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        context.registerReceiver(broadcastReceiver, intentFilter);
-
+        request.setDestinationInExternalPublicDir("Download/" + context.getPackageName(), "install.apk");
+        BaseApplication app = (BaseApplication) context.getApplicationContext();
+        app.downloadId = downloadManager.enqueue(request);
     }
 
     public void getLatestVersion(CallBack<Version> callBack) {
-        Executors.newCachedThreadPool().execute(()->{
+        Executors.newCachedThreadPool().execute(() -> {
             try {
                 URL url = new URL("https://raw.githubusercontent.com/qgswsg/new-sync/master/version");
                 HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
@@ -111,8 +98,8 @@ public class CheckUpdate {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 byte[] buff = new byte[1024];
                 int len = -1;
-                while ((len = inputStream.read(buff)) != -1){
-                    byteArrayOutputStream.write(buff,0,len);
+                while ((len = inputStream.read(buff)) != -1) {
+                    byteArrayOutputStream.write(buff, 0, len);
                 }
                 String result = byteArrayOutputStream.toString();
                 Gson gson = new Gson();

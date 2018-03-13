@@ -53,6 +53,7 @@ public class BaseApplication extends Application {
 
     private final AtomicReference<IOneDriveClient> mClient = new AtomicReference<>();
     private ConnectivityManager mConnectivityManager;
+    public long downloadId;
 
     public void checkPermission() {
 

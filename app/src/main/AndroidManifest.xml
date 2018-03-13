@@ -82,8 +82,8 @@
             android:syncable="true" />
 
         <activity
-            android:launchMode="singleInstance"
             android:name=".activity.TranslucentActivity"
+            android:launchMode="singleInstance"
             android:theme="@style/TranslucentTheme" />
 
         <receiver
@@ -123,12 +123,21 @@
                 <action android:name="android.intent.action.SEND" />
                 <action android:name="android.intent.action.SENDTO" />
 
-                <!--<category android:name="android.intent.category.BROWSABLE" />-->
+                <!-- <category android:name="android.intent.category.BROWSABLE" /> -->
 
                 <data android:scheme="sms" />
                 <data android:scheme="smsto" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name=".broadcastReceiver.DownloadCompleteReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

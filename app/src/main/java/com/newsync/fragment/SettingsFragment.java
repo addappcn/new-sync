@@ -4,8 +4,12 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
@@ -17,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.newsync.BaseApplication;
+import com.newsync.BuildConfig;
 import com.newsync.CheckUpdate;
 import com.newsync.R;
 
@@ -55,8 +60,36 @@ public class SettingsFragment extends PreferenceFragment {
                     navigateTo(PasswordFragment.newInstance("change"));
                     break;
                 case "checkUpdate":
+                    ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                    progressDialog.setMessage("正在检查更新...");
+                    progressDialog.show();
                     CheckUpdate checkUpdate = new CheckUpdate();
-                    checkUpdate.check();
+                    checkUpdate.check(new Handler() {
+                        @Override
+                        public void handleMessage(Message msg) {
+                            super.handleMessage(msg);
+                            progressDialog.cancel();
+                            switch (msg.what) {
+                                case 0://当前版本就是最新版
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("更新")
+                                            .setMessage("当前版本已是最新版")
+                                            .setPositiveButton("知道了", null)
+                                            .show();
+                                    break;
+                                case 1://当前版本不是最新版
+                                    new AlertDialog.Builder(getActivity())
+                                            .setTitle("更新")
+                                            .setMessage("有新版本\n" + ((CheckUpdate.Version) msg.obj).getUpdateContent())
+                                            .setPositiveButton("更新", (dialogInterface, i) -> {
+                                                checkUpdate.startUpdate(getActivity(), ((CheckUpdate.Version) msg.obj).getUpdateURL());
+                                            })
+                                            .setNegativeButton("稍后更新", null)
+                                            .show();
+                                    break;
+                            }
+                        }
+                    });
                     break;
                 case "about":
                     new AlertDialog.Builder(getActivity())
@@ -66,13 +99,15 @@ public class SettingsFragment extends PreferenceFragment {
                                     "对用户数据进行了严格加密。" +
                                     "并且将加密后的数据库上传到用户自己的OneDrive网盘，" +
                                     "用户在使用新同步时完全不用担心自己的隐私数据会被人查看或被利用。")
-                            .setPositiveButton("确认",null)
+                            .setPositiveButton("确认", null)
                             .show();
                     break;
             }
             return false;
         };
-        findPreference(getString(R.string.checkUpload)).setOnPreferenceClickListener(onPreferenceClickListener);
+        Preference preference = findPreference(getString(R.string.checkUpload));
+        preference.setSummary("当前版本：" + BuildConfig.VERSION_NAME);
+        preference.setOnPreferenceClickListener(onPreferenceClickListener);
         findPreference(getString(R.string.about)).setOnPreferenceClickListener(onPreferenceClickListener);
         findPreference(getString(R.string.encryptionPassword)).setOnPreferenceClickListener(onPreferenceClickListener);
     }

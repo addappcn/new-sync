@@ -1,15 +1,23 @@
 package com.newsync;
 
 import android.app.DownloadManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.Executors;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -19,10 +27,11 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class CheckUpdate {
 
-    class Version{
+    public class Version{
         private int versionCode;
         private String versionName;
         private String updateContent;
+        private String updateURL;
 
         public int getVersionCode() {
             return versionCode;
@@ -47,42 +56,73 @@ public class CheckUpdate {
         public void setUpdateContent(String updateContent) {
             this.updateContent = updateContent;
         }
-    }
 
-    public boolean check(){
-        Version latestVersion = getLatestVersion();
-        if (latestVersion == null){
-            return false;
+        public String getUpdateURL() {
+            return updateURL;
         }
-        System.out.println(latestVersion.getVersionCode() + " " + latestVersion.getVersionName() + " " + latestVersion.getUpdateContent());
-        return BuildConfig.VERSION_CODE == latestVersion.getVersionCode();
+
+        public void setUpdateURL(String updateURL) {
+            this.updateURL = updateURL;
+        }
     }
 
-    public void startUpdate(Context context){
-        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-    }
-
-    private Version getLatestVersion() {
-        Version version = null;
-        try {
-            URL url = new URL("https://raw.githubusercontent.com/qgswsg/new-sync/master/version");
-            HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
-            InputStream inputStream = httpsURLConnection.getInputStream();
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            byte[] buff = new byte[1024];
-            int len = -1;
-            while ((len = inputStream.read(buff)) != -1){
-                byteArrayOutputStream.write(buff,0,len);
+    public void check(Handler handler){
+        getLatestVersion(version -> {
+            if (BuildConfig.VERSION_CODE <= version.getVersionCode()){
+                handler.sendEmptyMessage(0);
+            }else {
+                Message obtain = Message.obtain();
+                obtain.obj = version;
+                obtain.what = 1;
+                handler.sendMessage(obtain);
             }
-            String result = byteArrayOutputStream.toString();
-            System.out.println(result);
-            Gson gson = new Gson();
-            version = gson.fromJson(result, Version.class);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return version;
+        });
+    }
+
+    public void startUpdate(Context context,String updateURL){
+        DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(updateURL));
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI);
+        long enqueue = downloadManager.enqueue(request);
+        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+                if (ID == enqueue) {
+                    try {
+                        downloadManager.openDownloadedFile(enqueue);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        context.registerReceiver(broadcastReceiver, intentFilter);
+
+    }
+
+    public void getLatestVersion(CallBack<Version> callBack) {
+        Executors.newCachedThreadPool().execute(()->{
+            try {
+                URL url = new URL("https://raw.githubusercontent.com/qgswsg/new-sync/master/version");
+                HttpsURLConnection httpsURLConnection = (HttpsURLConnection) url.openConnection();
+                InputStream inputStream = httpsURLConnection.getInputStream();
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                byte[] buff = new byte[1024];
+                int len = -1;
+                while ((len = inputStream.read(buff)) != -1){
+                    byteArrayOutputStream.write(buff,0,len);
+                }
+                String result = byteArrayOutputStream.toString();
+                Gson gson = new Gson();
+                Version version = gson.fromJson(result, Version.class);
+                callBack.run(version);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }

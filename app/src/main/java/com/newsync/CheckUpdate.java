@@ -13,6 +13,7 @@ import android.os.Message;
 import com.google.gson.Gson;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -89,7 +90,11 @@ public class CheckUpdate {
         //设置下载文件的类型
         request.setMimeType("application/vnd.android.package-archive");
         //设置下载存放的文件夹和文件名字
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "com.newsync/install.apk");
+        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), context.getPackageName() + "/install.apk");
+        if (file.exists()){
+            file.delete();
+        }
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, context.getPackageName() + "/install.apk");
         BaseApplication app = (BaseApplication) context.getApplicationContext();
         app.downloadId = downloadManager.enqueue(request);
     }

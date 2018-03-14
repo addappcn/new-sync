@@ -1,6 +1,6 @@
 {
   "versionCode":2,
   "versionName":"1.1",
-  "updateContent":"更新内容\n本次更新修复了通话记录同步算法中存在的BUG",
+  "updateContent":"V1.1\n本次更新修复了通话记录同步算法中存在的BUG",
   "updateURL":"https://raw.githubusercontent.com/qgswsg/new-sync/master/new-sync.apk"
 }
